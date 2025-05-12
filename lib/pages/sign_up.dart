@@ -6,11 +6,18 @@ import '../services/auth_services.dart';
 import 'login.dart';
 
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({super.key});
 
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+
+class _SignUpState extends State<SignUp>{
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -102,14 +109,24 @@ class SignUp extends StatelessWidget {
         SizedBox(height: 16,),
         TextField(
           controller: _passwordController,
-          obscureText: true,
+          obscureText: _obscureText,
           decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xffF7F7F9),
               border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(14)
-              )
+              ),
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });},
+              icon:  Icon(
+                  _obscureText
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+            ),
           ),
         )
       ],

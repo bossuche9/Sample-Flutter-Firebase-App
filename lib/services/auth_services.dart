@@ -21,6 +21,15 @@ class AuthService {
           password: password
       );
 
+     Fluttertoast.showToast(
+       msg: "Registration Successful",
+       toastLength: Toast.LENGTH_LONG,
+       gravity: ToastGravity.SNACKBAR,
+       backgroundColor: Colors.black54,
+       textColor: Colors.white,
+       fontSize: 14.0,
+     );
+
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
           context,
@@ -83,12 +92,24 @@ class AuthService {
       );
 
     } on FirebaseAuthException catch (e) {
-      String message = '';
-      if (e.code == 'invalid-email') {
-        message = 'No user found with this email. SignUp first.';
-      } else if (e.code == 'invalid-credentials') {
-        message = 'Wrong Password/Email Provided.';
-      }
+      String message = e.message ?? 'An unexpected error occurred';
+     switch (e.code) {
+       case 'invalid-email':
+         message = "That email address is not valid";
+         break;
+       case 'user-disabled':
+         message = "This user's account has been disabled";
+         break;
+       case 'user-not-found':
+         message = "No account found for that email. Please sign up first";
+         break;
+       case 'wrong-password':
+         message = "Wrong password provided for that account";
+         break;
+       case 'network-request-failed':
+         message = "A network error occurred";
+         break;
+     }
       Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,

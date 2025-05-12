@@ -8,11 +8,17 @@ import '../services/auth_services.dart';
 
 
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({super.key});
 
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login>{
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +146,7 @@ class Login extends StatelessWidget {
         ),
         const SizedBox(height: 16,),
         TextField(
-          obscureText: true,
+          obscureText: _obscureText,
           controller: _passwordController,
           decoration: InputDecoration(
               filled: true,
@@ -148,9 +154,20 @@ class Login extends StatelessWidget {
               border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(14)
-              )
+              ),
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+              _obscureText = !_obscureText;
+            });},
+              icon:  Icon(
+                  _obscureText
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+            ),
+
+                )
           ),
-        )
       ],
     );
   }
